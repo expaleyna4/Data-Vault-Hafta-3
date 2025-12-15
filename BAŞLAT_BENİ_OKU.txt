@@ -1,0 +1,86 @@
+╔══════════════════════════════════════════════════════════════╗
+║           HAFTA 3 - OTOMATİK KURULUM                         ║
+╚══════════════════════════════════════════════════════════════╝
+
+⚠️  ÖNEMLİ: HAFTA 1 ve 2 KURULU OLMALI!
+===================================
+Önce "data-vault" ve "data-vault-2" klasörlerindeki kurulumu yap!
+
+
+🚀 KURULUM (3 DAKİKA)
+=====================
+
+1️⃣  WSL Ubuntu'ya gir:
+   wsl -d Ubuntu
+
+2️⃣  Script'i kopyala ve çalıştır:
+   
+   cp /mnt/c/Users/KULLANICI_ADI/Masaüstü/data-vault-3/kurulum-hafta3.sh ~/
+   chmod +x ~/kurulum-hafta3.sh
+   bash ~/kurulum-hafta3.sh
+
+3️⃣  Otomatik kurulum + test başlayacak!
+   → Samba kurulumu (apt install samba)
+   → Samba konfigürasyonu (/etc/samba/smb.conf)
+   → Kullanıcı şifreleri (smbpasswd)
+   → systemd servisleri (enable + start)
+   → RCA senaryosu (simüle edilmiş hata)
+   → Git commit
+   → Otomatik test
+
+
+✅ KURULUM BİTTİĞİNDE
+=====================
+Şunları göreceksin:
+  ✓ Samba servisi aktif (smbd, nmbd)
+  ✓ /data/departmanlar Samba üzerinden paylaşılıyor
+  ✓ journalctl logları analiz edildi
+  ✓ RCA raporu oluşturuldu
+
+
+🧪 OTOMATİK TEST (15 Test)
+==========================
+bash ~/test-hafta3.sh
+
+Veya manuel:
+sudo systemctl status smbd
+sudo journalctl -u smbd -n 50
+sudo /opt/data-vault/servis-kontrol.sh
+sudo /opt/data-vault/log-analiz.sh
+
+
+📚 DETAYLI DÖKÜMANTASYON
+========================
+- README_HAFTA3.txt      → Hızlı başlangıç
+- HOCAYA_SUNUM_3.md      → Hocaya sunum için
+- KURULUM_3.md           → Detaylı adımlar
+- TEST_3.md              → Test senaryoları
+- SISTEM_DURUMU_3.json   → Teknik detaylar
+- docs/rca-report.md     → RCA analiz raporu
+
+
+📊 YENİ ÖZELLİKLER (Hafta 1-2'den Farklar)
+========================================
+✓ Samba dosya paylaşım servisi
+✓ systemd servis yönetimi
+✓ journalctl log analizi
+✓ RCA (Root Cause Analysis) senaryosu
+✓ Simüle edilmiş hata + düzeltme
+✓ Servis durum kontrolü
+✓ Windows erişim testi
+
+
+🆘 SORUN GİDERME
+================
+Detaylar için ana klasörde:
+  → WSL_TAM_KURULUM.md
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ÖZET: SIRA
+  1. Hafta 1 kur (data-vault/kurulum-hafta1.sh)
+  2. Hafta 2 kur (data-vault-2/kurulum-hafta2.sh)
+  3. Hafta 3 kur (data-vault-3/kurulum-hafta3.sh)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

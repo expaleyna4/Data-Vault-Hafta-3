@@ -1,0 +1,131 @@
+{
+  "proje": "DATA VAULT - Hafta 3",
+  "tarih": "2025-12-14",
+  "ozellikler": {
+    "yeni_eklenenler": [
+      "Samba dosya paylaşım servisi",
+      "systemd servis yönetimi",
+      "journalctl log analizi",
+      "RCA (Root Cause Analysis) senaryosu",
+      "Simüle edilmiş izin hatası",
+      "servis-kontrol.sh scripti",
+      "log-analiz.sh scripti"
+    ],
+    "teknolojiler": [
+      "Samba (smbd, nmbd)",
+      "systemctl (enable, start, status, restart)",
+      "journalctl (log analizi)",
+      "smbclient (paylaşım testi)",
+      "netstat (port kontrolü)",
+      "RCA metodolojisi (5 Why)"
+    ]
+  },
+  "samba_konfigurasyon": {
+    "global": {
+      "workgroup": "DATAVAULT",
+      "security": "user",
+      "protocol": "SMB2/SMB3"
+    },
+    "paylasimlar": {
+      "finans": {
+        "path": "/data/departmanlar/finans",
+        "valid_users": "@finans, denetci",
+        "permissions": "0770"
+      },
+      "ik": {
+        "path": "/data/departmanlar/ik",
+        "valid_users": "@ik, denetci",
+        "permissions": "0770"
+      },
+      "muhasebe": {
+        "path": "/data/departmanlar/muhasebe",
+        "valid_users": "@finans, denetci",
+        "permissions": "0770"
+      },
+      "arge": {
+        "path": "/data/departmanlar/arge",
+        "valid_users": "@ik, denetci",
+        "permissions": "0770"
+      }
+    }
+  },
+  "systemd_servisler": {
+    "smbd": {
+      "aciklama": "Samba SMB Daemon",
+      "durum": "active (running)",
+      "otomatik_baslatma": true,
+      "portlar": [139, 445]
+    },
+    "nmbd": {
+      "aciklama": "Samba NetBIOS Name Server",
+      "durum": "active (running)",
+      "otomatik_baslatma": true,
+      "portlar": [137, 138]
+    }
+  },
+  "scriptler": {
+    "servis-kontrol.sh": {
+      "isim": "Servis Durum Kontrolü",
+      "komut": "sudo /opt/data-vault/servis-kontrol.sh",
+      "cikti": "stdout",
+      "kontroller": [
+        "Samba servislerinin durumu",
+        "Port kontrolü (139, 445)",
+        "Paylaşım listesi",
+        "Son 10 dakikadaki hatalar"
+      ]
+    },
+    "log-analiz.sh": {
+      "isim": "Samba Log Analizi",
+      "komut": "sudo /opt/data-vault/log-analiz.sh",
+      "cikti": "/var/log/samba-analiz-YYYYMMDD.txt",
+      "analizler": [
+        "Son 24 saatteki tüm loglar",
+        "Hata ve uyarı logları",
+        "Permission denied hataları",
+        "Başarılı bağlantılar",
+        "Servis durumu"
+      ]
+    }
+  },
+  "rca_senaryo": {
+    "problem": "Kullanıcılar Samba üzerinden departman klasörlerine erişemiyor",
+    "belirti": "Permission denied hatası",
+    "kok_neden": "SGID biti eksikliği",
+    "duzeltici_eylem": [
+      "chmod 2770 /data/departmanlar/finans",
+      "setfacl kontrolü",
+      "systemctl restart smbd",
+      "Doğrulama testleri"
+    ],
+    "sonuc": "Erişim problemi çözüldü",
+    "rapor": "docs/rca-report.md"
+  },
+  "test_sonuclari": {
+    "samba_kurulum": "✓ Samba başarıyla kuruldu",
+    "servis_durumu": "✓ smbd ve nmbd aktif",
+    "paylasim_testi": "✓ 4 paylaşım erişilebilir",
+    "izin_kontrolu": "✓ SGID ve ACL doğru",
+    "log_analizi": "✓ journalctl logları okunabilir",
+    "rca_senaryo": "✓ Hata simüle edildi ve çözüldü"
+  },
+  "git_commits": [
+    "4a82b4e feat: hafta 2 scriptine SGID ve ACL yapılandırması eklendi",
+    "e729d88 feat: hafta 2 disk analizi scriptleri",
+    "c300e18 feat: hafta 1 temel yapı",
+    "[YENİ] feat: hafta 3 samba kurulumu ve rca senaryosu eklendi"
+  ],
+  "demo_komutlari": [
+    "sudo systemctl status smbd nmbd",
+    "sudo journalctl -u smbd -n 50",
+    "sudo /opt/data-vault/servis-kontrol.sh",
+    "sudo /opt/data-vault/log-analiz.sh",
+    "smbclient -L localhost -N",
+    "cat ~/data-vault/docs/rca-report.md"
+  ],
+  "windows_erisim": {
+    "yol": "\\\\wsl.localhost\\Ubuntu\\data\\departmanlar\\finans",
+    "kullanici": "finansuser",
+    "sifre": "datavault123"
+  }
+}
